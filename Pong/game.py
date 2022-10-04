@@ -1,10 +1,11 @@
 import pygame as pg
+from scene import Scene
 from paddle import Paddle
 from ball import Ball
 from config import *
 from colors import *
 
-class Game:
+class Game(Scene):
     def __init__(self) -> None:
         self.player1 = Paddle(10, GREEN)
         self.player2 = Paddle(WIDTH - PADDLE_W - 10, RED)

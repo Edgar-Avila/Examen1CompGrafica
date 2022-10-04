@@ -38,21 +38,6 @@ class Paddle:
             else:
                 self.vel.y *= 0.2
             self.rect.clamp_ip(0, 0, WIDTH, HEIGHT)
-# def automatico(self, py):
-#         self.y += self.vy
-#         if self.aut <= 0:
-#             medio = self.y + self.h / 2
-#             if abs(medio-py) > self.h / 4:
-#                 if medio < py:
-#                     self.vy = self.sp
-#                 else:
-#                     self.vy = -self.sp
-#             else:
-#                 self.vy *= 0.2
-#             self.aut = 2
-#         else:
-#             self.aut -= 1
-#         self.bordes()
 
     def get_bounds(self) -> tuple[float, float, float, float]:
         left = self.rect.x
