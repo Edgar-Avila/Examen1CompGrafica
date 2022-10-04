@@ -4,6 +4,7 @@ from colors import *
 from scene import Scene, SceneOption
 from game import Game
 from menu import Menu
+from help import Help
 
 class App:
     def __init__(self) -> None:
@@ -12,6 +13,7 @@ class App:
         self.running = False
         self.game = Game()
         self.menu = Menu()
+        self.help = Help()
 
     def events(self) -> None:
         for event in pg.event.get():
@@ -26,6 +28,8 @@ class App:
             self.game.update()
         elif Scene.current == SceneOption.MENU:
             self.menu.update()
+        elif Scene.current == SceneOption.HELP:
+            self.help.update()
 
     def draw(self) -> None:
         self.window.fill(BLACK)
@@ -33,6 +37,8 @@ class App:
             self.game.draw(self.window)
         elif Scene.current == SceneOption.MENU:
             self.menu.draw(self.window)
+        elif Scene.current == SceneOption.HELP:
+            self.help.draw(self.window)
         pg.display.update()
 
     def run(self):

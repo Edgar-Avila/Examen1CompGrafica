@@ -1,3 +1,4 @@
+import pygame as pg
 from enum import Enum
 from abc import ABC, abstractmethod
 
@@ -10,10 +11,10 @@ class Scene(ABC):
     current = SceneOption.MENU
 
     @abstractmethod
-    def update():
+    def update(self):
         pass
 
     @abstractmethod
-    def draw():
+    def draw(self, window: pg.surface.Surface):
         pass
     
