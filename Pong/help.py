@@ -16,6 +16,9 @@ class Help(Scene):
         self.lines = [self.font.render(line, False, WHITE) for line in lines]
         self.delay = 20
 
+    def handle_events(self, event: pg.event.Event):
+        pass
+
     def init(self, **kwargs):
         return super().init(**kwargs)
 

@@ -12,34 +12,25 @@ class App:
         pg.display.set_caption("Pong")
         self.clock = pg.time.Clock()
         self.running = False
-        self.game = Game()
-        self.menu = Menu()
-        self.help = Help()
+        self.scenes = {
+            SceneOption.GAME: Game(),
+            SceneOption.MENU: Menu(),
+            SceneOption.HELP: Help()
+        }
 
     def events(self) -> None:
         for event in pg.event.get():
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_ESCAPE:
                     self.running = False
-                if event.key == pg.K_SPACE:
-                    self.game.start()
+            self.scenes[Scene.current].handle_events(event)
 
     def update(self) -> None:
-        if Scene.current == SceneOption.GAME:
-            self.game.update()
-        elif Scene.current == SceneOption.MENU:
-            self.menu.update()
-        elif Scene.current == SceneOption.HELP:
-            self.help.update()
+        self.scenes[Scene.current].update()
 
     def draw(self) -> None:
         self.window.fill(BLACK)
-        if Scene.current == SceneOption.GAME:
-            self.game.draw(self.window)
-        elif Scene.current == SceneOption.MENU:
-            self.menu.draw(self.window)
-        elif Scene.current == SceneOption.HELP:
-            self.help.draw(self.window)
+        self.scenes[Scene.current].draw(self.window)
         pg.display.update()
 
     def run(self):

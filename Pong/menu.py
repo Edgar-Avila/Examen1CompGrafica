@@ -12,8 +12,17 @@ class Menu(Scene):
         self.selected = 0
         self.delay = 0
 
+    def handle_events(self, event: pg.event.Event):
+        if event.type == pg.KEYDOWN:
+            if event.key in (pg.K_DOWN, pg.K_s):
+                self.down()
+            elif event.key in (pg.K_UP, pg.K_w):
+                self.up()
+            elif event.key in (pg.K_RETURN, pg.K_z, pg.K_SPACE):
+                self.run_selected()
+
     def init(self, **kwargs):
-        return super().init()
+        pass
     
     def run_selected(self) -> None:
         selected_option = self.options[self.selected]
@@ -26,7 +35,7 @@ class Menu(Scene):
             exit()
 
     def update(self) -> None:
-        self.input()
+        pass
 
     def down(self) -> None:
         self.selected += 1
@@ -37,19 +46,6 @@ class Menu(Scene):
         self.selected -= 1
         if self.selected < 0:
             self.selected = len(self.options) - 1
-
-    def input(self) -> None:
-        if self.delay <= 0:
-            keys = pg.key.get_pressed()
-            if keys[pg.K_DOWN]:
-                self.down()
-            elif keys[pg.K_UP]:
-                self.up()
-            elif keys[pg.K_RETURN] or keys[pg.K_z]:
-                self.run_selected()
-            self.delay = 10
-        else:
-            self.delay -= 1
 
     def draw(self, window: pg.surface.Surface) -> None:
         for i, (img, img2) in enumerate(zip(self.imgs, self.imgs_selected)):

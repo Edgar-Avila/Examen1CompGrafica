@@ -15,6 +15,10 @@ class Scene(ABC):
         Scene.current = to
 
     @abstractmethod
+    def handle_events(self, event: pg.event.Event):
+        pass
+
+    @abstractmethod
     def init(self, **kwargs):
         pass
 

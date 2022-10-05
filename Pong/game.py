@@ -24,6 +24,11 @@ class Game(Scene):
         self.p2_points = 0
         self.font = pg.font.SysFont('Comic Sans MS', 30)
 
+    def handle_events(self, event: pg.event.Event):
+        if event.type == pg.KEYDOWN:
+            if event.key in (pg.K_RETURN, pg.K_z, pg.K_SPACE):
+                self.start()
+
     def init(self, **kwargs):
         self.difficulty = kwargs.get('mode', GameDifficulty.MEDIUM)
         self.mode = kwargs.get('mode', GameMode.SINGLE_PLAYER)
