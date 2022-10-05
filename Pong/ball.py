@@ -1,5 +1,6 @@
 import pygame as pg
 from random import randint, choice
+from typing import Tuple
 from config import *
 
 class Ball:
@@ -28,7 +29,7 @@ class Ball:
         if self.pos.y < 0 or self.pos.y > HEIGHT:
             self.vel.y *= -1
 
-    def get_bounds(self) -> tuple[float, float, float, float]:
+    def get_bounds(self) -> Tuple[float, float, float, float]:
         left = self.pos.x - self.radius
         right = self.pos.x + self.radius
         top = self.pos.y - self.radius

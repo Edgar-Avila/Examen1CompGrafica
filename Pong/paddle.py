@@ -1,4 +1,5 @@
 import pygame as pg
+from typing import Tuple
 from config import *
 from ball import Ball
 import keys
@@ -40,7 +41,7 @@ class Paddle:
                 self.vel.y *= 0.2
             self.rect.clamp_ip(0, 0, WIDTH, HEIGHT)
 
-    def get_bounds(self) -> tuple[float, float, float, float]:
+    def get_bounds(self) -> Tuple[float, float, float, float]:
         left = self.rect.x
         right = self.rect.x + self.rect.w
         top = self.rect.y
