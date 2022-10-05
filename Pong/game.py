@@ -23,7 +23,7 @@ class Game(Scene):
         self.ball = Ball(WHITE)
         self.p1_points = 0
         self.p2_points = 0
-        self.font = pg.font.SysFont('Comic Sans MS', 30)
+        self.font = pg.freetype.Font(None, 30)
 
     def handle_events(self, event: pg.event.Event):
         if event.type == pg.KEYDOWN:
@@ -62,8 +62,8 @@ class Game(Scene):
             self.player2.spawn()
 
     def draw_points(self, window: pg.surface.Surface) -> None:
-        p1_text = self.font.render(f'{self.p1_points}', False, GREEN)
-        p2_text = self.font.render(f'{self.p2_points}', False, RED)
+        p1_text = self.font.render(f'{self.p1_points}', GREEN)[0]
+        p2_text = self.font.render(f'{self.p2_points}', RED)[0]
         window.blit(p1_text, (MID_X - p1_text.get_width() - 10, 10))
         window.blit(p2_text, (MID_X + 10, 10))
 

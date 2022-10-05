@@ -5,10 +5,10 @@ from colors import *
 
 class Menu(Scene):
     def __init__(self) -> None:
-        self.font = pg.font.SysFont('Comic Sans MS', 30)
+        self.font = pg.freetype.Font(None, 30)
         self.options = ['Start', 'Help', 'Exit']
-        self.imgs = [self.font.render(option, False, WHITE) for option in self.options]
-        self.imgs_selected = [self.font.render(option, False, GREEN) for option in self.options]
+        self.imgs = [self.font.render(option, WHITE)[0] for option in self.options]
+        self.imgs_selected = [self.font.render(option, GREEN)[0] for option in self.options]
         self.selected = 0
         self.delay = 0
 

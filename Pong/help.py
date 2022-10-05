@@ -6,15 +6,28 @@ import keys
 
 class Help(Scene):
     def __init__(self) -> None:
-        self.font = pg.font.SysFont('Comic Sans MS', 30)
-        lines = [
-            "Use the space key to start the match",
-            "Use the up and down arrow keys to move",
+        self.font = pg.freetype.Font(None, 30)
+        title = [
+            "Instructions",
+            " "
+        ]
+        controls = [
+            "<Confirm> -> [Space, Z, Enter]",
+            "<Down> -> [S, Down]",
+            "<Up> -> [S, Up]",
+            " "
+        ]
+        instructions = [
+            "Press <Confirm> to start the match",
+            "Press <Up> and <Down> to move",
             "Score a point when the ball goes past",
             "Your opponent goal.",
-            "Z or Space or Enter -> Back"
+            "Press <Confirm> to go back"
         ]
-        self.lines = [self.font.render(line, False, WHITE) for line in lines]
+        title = [self.font.render(line, YELLOW, BLACK) for line in title]
+        controls = [self.font.render(line, GREEN, BLACK) for line in controls]
+        instructions = [self.font.render(line, WHITE, BLACK) for line in instructions]
+        self.lines = title + controls + instructions
 
     def handle_events(self, event: pg.event.Event):
         if event.type == pg.KEYDOWN:
@@ -28,6 +41,6 @@ class Help(Scene):
         pass
     def draw(self, window: pg.surface.Surface):
         for i, line in enumerate(self.lines):
-            pos = (MID_X - line.get_width() / 2, MID_Y + i * 30 - len(self.lines) * 30 / 2)
-            window.blit(line, pos)
+            pos = (20, MID_Y + i * 30 - len(self.lines) * 30 / 2)
+            window.blit(line[0], pos)
 
