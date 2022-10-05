@@ -4,6 +4,16 @@ from paddle import Paddle
 from ball import Ball
 from config import *
 from colors import *
+from enum import Enum
+
+class GameMode(Enum):
+    SINGLE_PLAYER = 0,
+    TWO_PLAYER = 1
+
+class GameDifficulty(Enum):
+    EASY = 0
+    MEDIUM = 1
+    HARD = 2
 
 class Game(Scene):
     def __init__(self) -> None:
@@ -13,6 +23,10 @@ class Game(Scene):
         self.p1_points = 0
         self.p2_points = 0
         self.font = pg.font.SysFont('Comic Sans MS', 30)
+
+    def init(self, **kwargs):
+        self.difficulty = kwargs.get('mode', GameDifficulty.MEDIUM)
+        self.mode = kwargs.get('mode', GameMode.SINGLE_PLAYER)
 
     def start(self) -> None:
         if self.ball.vel.x == 0 and self.ball.vel.y == 0:

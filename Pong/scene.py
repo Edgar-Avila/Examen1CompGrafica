@@ -10,6 +10,14 @@ class SceneOption(Enum):
 class Scene(ABC):
     current = SceneOption.MENU
 
+    @staticmethod
+    def changeScene(to: SceneOption):
+        Scene.current = to
+
+    @abstractmethod
+    def init(self, **kwargs):
+        pass
+
     @abstractmethod
     def update(self):
         pass

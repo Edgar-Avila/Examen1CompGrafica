@@ -16,10 +16,13 @@ class Help(Scene):
         self.lines = [self.font.render(line, False, WHITE) for line in lines]
         self.delay = 20
 
+    def init(self, **kwargs):
+        return super().init(**kwargs)
+
     def update(self):
         if self.delay <= 0:
             if pg.key.get_pressed()[pg.K_z]:
-                Scene.current = SceneOption.MENU
+                Scene.changeScene(SceneOption.MENU)
                 self.delay = 20
         else:
             self.delay -= 1

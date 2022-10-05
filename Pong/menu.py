@@ -11,13 +11,16 @@ class Menu(Scene):
         self.imgs_selected = [self.font.render(option, False, GREEN) for option in self.options]
         self.selected = 0
         self.delay = 0
+
+    def init(self, **kwargs):
+        return super().init()
     
     def run_selected(self) -> None:
         selected_option = self.options[self.selected]
         if selected_option == 'Start':
-            Scene.current = SceneOption.GAME
+            Scene.changeScene(SceneOption.GAME)
         elif selected_option == 'Help':
-            Scene.current = SceneOption.HELP
+            Scene.changeScene(SceneOption.HELP)
         elif selected_option == 'Exit':
             pg.quit()
             exit()
