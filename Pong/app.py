@@ -9,6 +9,7 @@ from help import Help
 class App:
     def __init__(self) -> None:
         self.window = pg.display.set_mode((WIDTH, HEIGHT))
+        pg.display.set_caption("Pong")
         self.clock = pg.time.Clock()
         self.running = False
         self.game = Game()
