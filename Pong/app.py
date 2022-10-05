@@ -20,6 +20,10 @@ class App:
 
     def events(self) -> None:
         for event in pg.event.get():
+            if event.type == pg.QUIT:
+                pg.quit()
+                self.running = False
+                exit()
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_ESCAPE:
                     self.running = False
