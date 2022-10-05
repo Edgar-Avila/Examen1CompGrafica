@@ -5,6 +5,7 @@ from ball import Ball
 from config import *
 from colors import *
 from enum import Enum
+import keys
 
 class GameMode(Enum):
     SINGLE_PLAYER = 0,
@@ -26,7 +27,7 @@ class Game(Scene):
 
     def handle_events(self, event: pg.event.Event):
         if event.type == pg.KEYDOWN:
-            if event.key in (pg.K_RETURN, pg.K_z, pg.K_SPACE):
+            if event.key in keys.ACCEPT:
                 self.start()
 
     def init(self, **kwargs):

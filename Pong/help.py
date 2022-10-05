@@ -2,6 +2,7 @@ import pygame as pg
 from scene import Scene, SceneOption
 from config import *
 from colors import *
+import keys
 
 class Help(Scene):
     def __init__(self) -> None:
@@ -11,25 +12,20 @@ class Help(Scene):
             "Use the up and down arrow keys to move",
             "Score a point when the ball goes past",
             "Your opponent goal.",
-            "Z - Back"
+            "Z or Space or Enter -> Back"
         ]
         self.lines = [self.font.render(line, False, WHITE) for line in lines]
-        self.delay = 20
 
     def handle_events(self, event: pg.event.Event):
-        pass
+        if event.type == pg.KEYDOWN:
+            if event.key in keys.ACCEPT:
+                Scene.changeScene(SceneOption.MENU)
 
     def init(self, **kwargs):
         return super().init(**kwargs)
 
     def update(self):
-        if self.delay <= 0:
-            if pg.key.get_pressed()[pg.K_z]:
-                Scene.changeScene(SceneOption.MENU)
-                self.delay = 20
-        else:
-            self.delay -= 1
-
+        pass
     def draw(self, window: pg.surface.Surface):
         for i, line in enumerate(self.lines):
             pos = (MID_X - line.get_width() / 2, MID_Y + i * 30 - len(self.lines) * 30 / 2)

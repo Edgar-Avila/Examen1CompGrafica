@@ -1,6 +1,7 @@
 import pygame as pg
 from config import *
 from ball import Ball
+import keys
 
 class Paddle:
     def __init__(self, x, color) -> None:
@@ -18,10 +19,10 @@ class Paddle:
     
     def move_input(self) -> None:
         self.vel = pg.Vector2()
-        keys = pg.key.get_pressed()
-        if keys[pg.K_s] or keys[pg.K_DOWN]:
+        pressed = pg.key.get_pressed()
+        if True in (pressed[k] for k in keys.DOWN):
             self.vel.y = self.sp
-        if keys[pg.K_w] or keys[pg.K_UP]:
+        if True in (pressed[k] for k in keys.UP):
             self.vel.y = -self.sp
         self.rect.move_ip(self.vel)
         self.rect.clamp_ip(0, 0, WIDTH, HEIGHT)
