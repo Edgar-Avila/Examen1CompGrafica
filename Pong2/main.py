@@ -8,7 +8,7 @@ HEIGHT = 600
 MID_X = WIDTH / 2
 MID_Y = HEIGHT / 2
 FPS = 60
-TWO_PLAYER = False
+TWO_PLAYER = True
 
 # Game
 PADDLE_W = 10
@@ -136,13 +136,14 @@ def check_collisions(ball, player1, player2):
     if ball_collides_p2 and ball.vel.x > 0:
         ball.vel.x *= -1
 
-def check_point(ball, player1, player2):
+def check_point(ball, player1, player2, point_sound):
     if ball.pos.x < 0 or ball.pos.x > WIDTH:
         if ball.pos.x < 0:
             player2.points += 1
         if ball.pos.x > WIDTH:
             player1.points += 1
         ball.spawn()
+        point_sound.play()
         player1.spawn()
         player2.spawn()
 
@@ -163,6 +164,7 @@ def main():
     # Init
     pg.init()
     pg.font.init()
+    pg.mixer.init()
 
     # Vars
     window = pg.display.set_mode((WIDTH, HEIGHT))
@@ -171,6 +173,9 @@ def main():
     clock = pg.time.Clock()
     running = True
     winner = None
+    point_sound = pg.mixer.Sound("./punto.wav")
+    win_sound = pg.mixer.Sound("./ganar.wav")
+    lose_sound = pg.mixer.Sound("./perder.wav")
 
     # Entities
     ball = Ball(WHITE)
@@ -193,7 +198,7 @@ def main():
                         ball.start()
         # Update
         check_collisions(ball, player1, player2)
-        check_point(ball, player1, player2)
+        check_point(ball, player1, player2, point_sound)
         winner = check_winner(player1, player2)
         running = running and (winner is None)
         ball.move()
@@ -215,16 +220,30 @@ def main():
 
         clock.tick(FPS)
 
+    point_sound.stop()
     if winner is not None:
-        state = (winner, TWO_PLAYER)
-        if state == (Winner.player1, False):
-            print("Ganaste")
-        elif state == (Winner.player2, False):
-            print("Perdiste")
-        elif state == (Winner.player1, True):
-            print("Jugador 1 gana")
-        elif state == (Winner.player2, True):
-            print("Jugador 2 gana")
+        if TWO_PLAYER:
+            win_sound.play()
+            if winner == Winner.player1:
+                print("Jugador 1 gana")
+            elif winner == Winner.player2:
+                print("Jugador 2 gana")
+        else:
+            if winner == Winner.player1:
+                win_sound.play()
+                print("Ganaste")
+            elif winner == Winner.player2:
+                lose_sound.play()
+                print("Perdiste")
+        while pg.mixer.get_busy():
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    running = False
+                if event.type == pg.KEYDOWN:
+                    # Exit
+                    if event.key in CANCEL:
+                        running = False
+
     pg.quit()
 
 if __name__ == '__main__':
