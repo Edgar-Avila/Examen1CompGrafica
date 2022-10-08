@@ -1,5 +1,6 @@
 import pygame as pg
 from random import choice, randint
+from enum import Enum
 
 # General
 WIDTH = 600
@@ -13,15 +14,17 @@ TWO_PLAYER = False
 PADDLE_W = 10
 PADDLE_H = 80
 BALL_RADIUS = 10
-POINTS_TO_WIN = 1
+POINTS_TO_WIN = 5
 
 # Keys
 CANCEL = (pg.K_ESCAPE, pg.K_q)
 ACCEPT = (pg.K_SPACE, pg.K_RETURN, pg.K_z)
-LEFT = (pg.K_LEFT, pg.K_a)
-RIGHT = (pg.K_RIGHT, pg.K_d)
-UP = (pg.K_UP, pg.K_w)
-DOWN = (pg.K_DOWN, pg.K_s)
+UP1 = (pg.K_UP, )
+DOWN1 = (pg.K_DOWN, )
+UP2 = (pg.K_w, )
+DOWN2 = (pg.K_s, )
+UP = UP1 + UP2
+DOWN = DOWN1 + DOWN2
 
 # Colors
 BLACK = (0, 0, 0)
@@ -32,6 +35,9 @@ GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 
+class Winner(Enum):
+    player1 = 0,
+    player2 = 1
 
 class Ball:
     def __init__(self, color):
@@ -84,12 +90,12 @@ class Paddle:
         self.rect = pg.Rect(self.start)
         self.vel = pg.Vector2()
     
-    def move_input(self):
+    def move_input(self, up, down):
         self.vel = pg.Vector2()
         pressed = pg.key.get_pressed()
-        if True in (pressed[k] for k in DOWN):
+        if True in (pressed[k] for k in down):
             self.vel.y = self.sp
-        if True in (pressed[k] for k in UP):
+        if True in (pressed[k] for k in up):
             self.vel.y = -self.sp
         self.rect.move_ip(self.vel)
         self.rect.clamp_ip(0, 0, WIDTH, HEIGHT)
@@ -133,9 +139,9 @@ def check_collisions(ball, player1, player2):
 def check_point(ball, player1, player2):
     if ball.pos.x < 0 or ball.pos.x > WIDTH:
         if ball.pos.x < 0:
-            player1.points += 1
-        if ball.pos.x > WIDTH:
             player2.points += 1
+        if ball.pos.x > WIDTH:
+            player1.points += 1
         ball.spawn()
         player1.spawn()
         player2.spawn()
@@ -148,9 +154,9 @@ def draw_points(window, font, player1, player2):
 
 def check_winner(player1, player2):
     if player1.points >= POINTS_TO_WIN:
-        return "player1"
+        return Winner.player1
     if player2.points >= POINTS_TO_WIN:
-        return "player2"
+        return Winner.player2
     return None
 
 def main():
@@ -191,8 +197,12 @@ def main():
         winner = check_winner(player1, player2)
         running = running and (winner is None)
         ball.move()
-        player1.move_input()
-        player2.auto(ball)
+        if TWO_PLAYER:
+            player1.move_input(UP1, DOWN1)
+            player2.move_input(UP2, DOWN2)
+        else:
+            player1.move_input(UP, DOWN)
+            player2.auto(ball)
 
         # Draw
         window.fill(BLACK)
@@ -206,10 +216,15 @@ def main():
         clock.tick(FPS)
 
     if winner is not None:
-        if winner == player1:
+        state = (winner, TWO_PLAYER)
+        if state == (Winner.player1, False):
             print("Ganaste")
-        else:
+        elif state == (Winner.player2, False):
             print("Perdiste")
+        elif state == (Winner.player1, True):
+            print("Jugador 1 gana")
+        elif state == (Winner.player2, True):
+            print("Jugador 2 gana")
     pg.quit()
 
 if __name__ == '__main__':
