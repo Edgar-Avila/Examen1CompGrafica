@@ -52,8 +52,8 @@ class Ball:
     
     def start(self):
         opx, opy = choice((True, False)), choice((True, False))
-        vx = randint(20, 40) / 10
-        vy = randint(20, 40) / 10
+        vx = randint(30, 40) / 10
+        vy = randint(30, 40) / 10
         if opx:
             vx *= -1
         if opy:
@@ -173,15 +173,25 @@ def main():
     clock = pg.time.Clock()
     running = True
     winner = None
-    point_sound = pg.mixer.Sound("./punto.wav")
-    win_sound = pg.mixer.Sound("./ganar.wav")
-    lose_sound = pg.mixer.Sound("./perder.wav")
+    bg = pg.image.load('./bg.png')
+    bg = pg.transform.scale(bg, (WIDTH, HEIGHT))
+    dark = pg.Surface(bg.get_size()).convert_alpha()
+    dark.fill((0, 0, 0, 150))
+    bg.blit(dark, (0, 0))
 
     # Entities
     ball = Ball(WHITE)
     player1 = Paddle(10, GREEN)
     player2 = Paddle(WIDTH - PADDLE_W - 10, RED)
 
+    # Music and sound
+    point_sound = pg.mixer.Sound("./punto.wav")
+    win_sound = pg.mixer.Sound("./ganar.wav")
+    lose_sound = pg.mixer.Sound("./perder.wav")
+    pg.mixer.music.load("./musica.mp3")
+    pg.mixer.music.play()
+
+    # Main loop
     while running:
         # Events
         for event in pg.event.get():
@@ -210,8 +220,8 @@ def main():
             player2.auto(ball)
 
         # Draw
-        window.fill(BLACK)
-        pg.draw.line(window, GRAY, (MID_X, 0), (MID_X, HEIGHT))
+        window.blit(bg, (0, 0))
+        pg.draw.line(window, WHITE, (MID_X, 0), (MID_X, HEIGHT))
         draw_points(window, font, player1, player2)
         player1.draw(window)
         player2.draw(window)
@@ -220,6 +230,7 @@ def main():
 
         clock.tick(FPS)
 
+    pg.mixer.music.stop()
     point_sound.stop()
     if winner is not None:
         if TWO_PLAYER:
